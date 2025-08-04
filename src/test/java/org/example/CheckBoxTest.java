@@ -25,7 +25,8 @@ public class CheckBoxTest {
     }
 
     @Test
-    public void selectDownloadsAndFiles() {
+
+    public void shouldSelectDownloadsAndFilesCheckboxes() {
         Checkbox checkbox = new Checkbox(page);
         ListButton listButton = new ListButton(page);
         checkbox.selectHomeCheckbox();
