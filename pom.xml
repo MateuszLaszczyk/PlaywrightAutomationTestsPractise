@@ -40,7 +40,7 @@
 
     <build>
         <plugins>
-            <!-- Kompilator -->
+            <!-- Compilation -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -83,4 +83,3 @@
         </plugins>
     </build>
 </project>
-
