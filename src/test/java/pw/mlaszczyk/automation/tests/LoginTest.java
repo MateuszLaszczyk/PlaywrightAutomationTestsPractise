@@ -30,6 +30,7 @@ public class LoginTest {
     // Credentials loaded from config.properties
     private static String username;
     private static String password;
+    private static String baseUrl;
 
     /**
      * Initializes the Playwright engine and browser before any tests run.
@@ -44,6 +45,7 @@ public class LoginTest {
 
         username = ConfigLoader.get("saucedemo.username");
         password = ConfigLoader.get("saucedemo.password");
+        baseUrl = ConfigLoader.get("saucedemo.baseUrl");
         System.out.println("Loaded username: " + username);
     }
 
@@ -54,7 +56,7 @@ public class LoginTest {
     @BeforeEach
     void setup() {
         page = browser.newPage();
-        page.navigate("https://www.saucedemo.com");
+        page.navigate(baseUrl);
         loginPage = new LoginPage(page);
     }
 
