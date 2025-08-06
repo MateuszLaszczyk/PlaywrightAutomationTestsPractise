@@ -9,7 +9,7 @@ import com.microsoft.playwright.Page;
  * <p>This class is responsible for performing actions related to the login process,
  * such as entering the username, password, and clicking the login button.
  */
-public class LoginPage {
+public class loginPage {
     private final Page page;
 
     /**
@@ -18,7 +18,7 @@ public class LoginPage {
      *
      * @param page the Playwright page representing the current browser tab
      */
-    public LoginPage(Page page) {
+    public loginPage(Page page) {
         this.page = page;
     }
 

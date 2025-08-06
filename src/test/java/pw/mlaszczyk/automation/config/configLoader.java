@@ -14,9 +14,11 @@ import java.util.Properties;
  * <pre>
  *     String username = ConfigLoader.get("saucedemo.username");
  *     String password = ConfigLoader.get("saucedemo.password");
+ *     String baseURL = ConfigLoader.get("saucedemo.baseUrl");
+ *     String baseURL = ConfigLoader.get("saucedemo.mainPageUrl");
  * </pre>
  */
-public class ConfigLoader {
+public class configLoader {
     private static final String CONFIG_PATH = "src/test/resources/config.properties";
     private static Properties properties;
 
