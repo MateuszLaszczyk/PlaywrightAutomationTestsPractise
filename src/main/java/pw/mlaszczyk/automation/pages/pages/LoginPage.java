@@ -28,6 +28,7 @@ public class LoginPage {
      *
      * @param username the username to input
      * @param password the password to input
+     * @param baseUrl the baseurl to input
      */
     public void login(String username, String password) {
         page.fill("#user-name", username);
