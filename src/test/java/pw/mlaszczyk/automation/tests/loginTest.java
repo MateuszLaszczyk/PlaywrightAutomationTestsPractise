@@ -6,8 +6,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.*;
-import pw.mlaszczyk.automation.pages.pages.LoginPage;
-import pw.mlaszczyk.automation.config.ConfigLoader;
+import pw.mlaszczyk.automation.pages.pages.loginPage;
+import pw.mlaszczyk.automation.config.configLoader;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -21,9 +21,9 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
  *
  * Test URL: https://www.saucedemo.com
  */
-public class LoginTest {
+public class loginTest {
     static Playwright playwright;
-    static LoginPage loginPage;
+    static loginPage loginPage;
     static Browser browser;
     Page page;
 
@@ -40,12 +40,12 @@ public class LoginTest {
     static void setupAll() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions().setHeadless(false)
+                new BrowserType.LaunchOptions().setHeadless(true)
         );
 
-        username = ConfigLoader.get("saucedemo.username");
-        password = ConfigLoader.get("saucedemo.password");
-        baseUrl = ConfigLoader.get("saucedemo.baseUrl");
+        username = configLoader.get("saucedemo.username");
+        password = configLoader.get("saucedemo.password");
+        baseUrl = configLoader.get("saucedemo.baseUrl");
         System.out.println("Loaded username: " + username);
     }
 
@@ -57,7 +57,7 @@ public class LoginTest {
     void setup() {
         page = browser.newPage();
         page.navigate(baseUrl);
-        loginPage = new LoginPage(page);
+        loginPage = new loginPage(page);
     }
 
     /**
