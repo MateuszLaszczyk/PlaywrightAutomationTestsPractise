@@ -1,21 +1,6 @@
 🧪 Playwright Java Test Automation Project
 This project is a test automation framework built using Microsoft Playwright with Java and JUnit 5. It includes modular page objects and configuration management for scalable and maintainable test development.
 
-📁 Project Structure
-.
-├── src
-│   ├── main
-│   │   └── java
-│   │       └── pw/mlaszczyk/automation/pages/pages
-│   │           └── LoginPage.java         # Page Object Model for login
-│   └── test
-│       ├── java
-│       │   └── pw/mlaszczyk/automation/tests
-│       │       └── LoginTest.java         # JUnit test case for login
-│       └── resources
-│           └── config.properties          # Environment-specific credentials
-├── README.md
-└── pom.xml or build.gradle
 ⚙️ Configuration
 Create a file at:
 src/test/resources/config.properties
