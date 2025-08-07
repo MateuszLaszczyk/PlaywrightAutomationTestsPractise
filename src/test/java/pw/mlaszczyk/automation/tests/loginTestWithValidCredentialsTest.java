@@ -61,6 +61,7 @@ public class loginTestWithValidCredentialsTest {
         page.navigate(baseUrl);
         loginPage = new loginPage(page);
     }
+
     @Epic("Logging in")
     @Feature("Logging in")
     @Story("User is able to logg in")

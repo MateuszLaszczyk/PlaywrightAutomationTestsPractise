@@ -60,6 +60,7 @@ public class addItemToCartTest {
         loginPage = new loginPage(page);
         productPage = new productPage(page);
     }
+
     @Epic("Adding item to cart")
     @Feature("Add item to cart")
     @Story("User adds item to cart and verifying")

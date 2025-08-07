@@ -15,7 +15,8 @@ import java.util.Properties;
  *     String username = ConfigLoader.get("saucedemo.username");
  *     String password = ConfigLoader.get("saucedemo.password");
  *     String baseURL = ConfigLoader.get("saucedemo.baseUrl");
- *     String baseURL = ConfigLoader.get("saucedemo.mainPageUrl");
+ *     String mainPageUrl = ConfigLoader.get("saucedemo.mainPageUrl");
+ *     String invalidUerName = ConfigLoader.get("saucedemo.invalidusername");
  * </pre>
  */
 public class configLoader {
