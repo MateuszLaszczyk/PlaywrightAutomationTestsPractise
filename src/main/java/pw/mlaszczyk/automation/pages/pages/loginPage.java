@@ -1,7 +1,8 @@
 package pw.mlaszczyk.automation.pages.pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import io.cucumber.java.en.When;
+
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -29,14 +30,24 @@ public class loginPage {
      * Logs in to the application by filling in the username and password fields,
      * and clicking the login button.
      *
-     * @param username the username to input
-     * @param password the password to input
-     * @param baseUrl the baseurl to input
+     * @param username        the username to input
+     * @param password        the password to input
+     * @param baseUrl         the baseurl to input
+     * @param invalidUserName the InvalidUserName to input
      */
-    public void loginAndVerify(String username, String password,String mainPageUrl) {
+    public void loginAndVerify(String username, String password, String mainPageUrl) {
         page.locator("input[data-test='username']").fill(username);
         page.locator("input[data-test='password']").fill(password);
         page.locator("input[data-test='login-button']").click();
         assertThat(page).hasURL(mainPageUrl);
+    }
+
+    public void loginWithInvalidUserNameAndVerify(String InvalidUserName, String password) {
+        page.locator("input[data-test='username']").fill(InvalidUserName);
+        page.locator("input[data-test='password']").fill(password);
+        page.locator("input[data-test='login-button']").click();
+        Locator ErrorPopup = page.locator("h3[data-test='error']");
+        assertThat(ErrorPopup).hasText("Epic sadface: Username and password do not match any user in this service");
+
     }
 }
