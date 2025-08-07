@@ -1,44 +1,43 @@
 package pw.mlaszczyk.automation.tests;
 
+import io.qameta.allure.*;
+import org.junit.jupiter.api.*;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
-import org.junit.jupiter.api.*;
-import pw.mlaszczyk.automation.pages.pages.loginPage;
 import pw.mlaszczyk.automation.config.configLoader;
+import pw.mlaszczyk.automation.pages.pages.loginPage;
+import pw.mlaszczyk.automation.pages.pages.productPage;
 
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-/**
- * This test class verifies the login functionality on the Saucedemo website
- * using Microsoft Playwright and JUnit 5.
- *
- * <p>It includes setup and teardown logic for the Playwright browser,
- * loads credentials from an external properties file,
- * and performs a successful login validation test.
- */
-public class loginTestWithValidCredentials {
+import java.io.ByteArrayInputStream;
+import java.util.Locale;
+
+
+public class endToEndOrderPlacementTest {
     static Playwright playwright;
     static loginPage loginPage;
     static Browser browser;
-    Page page;
+    static Page page;
+    static productPage productPage;
 
-    // Credentials loaded from config.properties
+    // Credentials loaded from config.properties file
     private static String username;
     private static String password;
     private static String baseUrl;
     private static String mainPageUrl;
 
     /**
-     * Initializes the Playwright engine and browser before any tests run.
-     * Also loads login credentials from the config.properties file using ConfigLoader.
+     * Runs once before all tests.
+     * Initializes Playwright, browser and loads credentials from config.
      */
     @BeforeAll
     static void setupAll() {
         playwright = Playwright.create();
+        Locale.setDefault(Locale.US); // set locale for consistent parsing.
         browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions().setHeadless(false)
+                new BrowserType.LaunchOptions().setHeadless(false) // show browser window
         );
 
         username = configLoader.get("saucedemo.username");
@@ -49,23 +48,33 @@ public class loginTestWithValidCredentials {
     }
 
     /**
-     * Opens a new browser page and navigates to the login page before each test.
-     * Initializes the LoginPage object for further interaction.
+     * Runs before each test.
+     * Creates a new browser page and initializes page objects.
      */
     @BeforeEach
     void setup() {
         page = browser.newPage();
         page.navigate(baseUrl);
         loginPage = new loginPage(page);
+        productPage = new productPage(page);
     }
 
+    @Epic("Order Placement")
+    @Feature("End-to-End Order Flow")
+    @Story("User places an order after successful login")
+    @Severity(SeverityLevel.CRITICAL)
+    @DisplayName("E2E Order Placement Test")
+
     @Test
-    void shouldLoginWithValidCredentials() {
+    void endToEndOrderPlacement() {
         loginPage.loginAndVerify(username, password, mainPageUrl);
+        productPage.endToEndOrderPlacement("Sauce Labs Fleece Jacket", "Mateusz", "Laszczyk", "80-126");
+        Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
 
     /**
-     * Closes the browser page after each test to clean up resources.
+     * Runs after each test.
+     * Closes the current browser page.
      */
     @AfterEach
     void tearDown() {
@@ -75,7 +84,8 @@ public class loginTestWithValidCredentials {
     }
 
     /**
-     * Closes the browser and Playwright engine after all tests have completed.
+     * Runs once after all tests.
+     * Closes the browser and Playwright engine.
      */
     @AfterAll
     static void tearDownAll() {
