@@ -4,9 +4,12 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import pw.mlaszczyk.automation.pages.pages.loginPage;
 import pw.mlaszczyk.automation.config.configLoader;
+
+import java.io.ByteArrayInputStream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -18,7 +21,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
  * loads credentials from an external properties file,
  * and performs a successful login validation test.
  */
-public class loginTestWithValidCredentials {
+public class loginTestWithValidCredentialsTest {
     static Playwright playwright;
     static loginPage loginPage;
     static Browser browser;
@@ -59,9 +62,16 @@ public class loginTestWithValidCredentials {
         loginPage = new loginPage(page);
     }
 
+    @Epic("Logging in")
+    @Feature("Logging in")
+    @Story("User is able to logg in")
+    @Severity(SeverityLevel.CRITICAL)
+    @DisplayName("Logging in ")
+
     @Test
     void shouldLoginWithValidCredentials() {
         loginPage.loginAndVerify(username, password, mainPageUrl);
+        Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
 
     /**

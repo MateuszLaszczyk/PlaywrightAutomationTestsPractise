@@ -9,23 +9,23 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source> <!-- Java version -->
+        <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <junit.jupiter.version>5.9.2</junit.jupiter.version>
-        <playwright.version>1.38.0</playwright.version> <!-- sprawdź najnowszą wersję -->
+        <junit.jupiter.version>5.10.2</junit.jupiter.version>
+        <playwright.version>1.38.0</playwright.version>
         <allure.version>2.22.1</allure.version>
         <allure.maven.plugin.version>2.11.2</allure.maven.plugin.version>
     </properties>
 
     <dependencies>
-        <!-- Playwright Java -->
+        <!-- Playwright -->
         <dependency>
             <groupId>com.microsoft.playwright</groupId>
             <artifactId>playwright</artifactId>
             <version>${playwright.version}</version>
         </dependency>
 
-        <!-- Allure JUnit 5 adapter -->
+        <!-- Allure JUnit 5 -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
@@ -33,6 +33,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Cucumber (Java + JUnit Platform) -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
@@ -40,16 +41,8 @@
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
             <version>7.14.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Cucumber JUnit Runner -->
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -70,7 +63,7 @@
 
     <build>
         <plugins>
-            <!-- Maven Surefire Plugin do uruchamiania testów -->
+            <!-- Surefire Plugin (do testów JUnit 5) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -80,17 +73,10 @@
                         <include>**/*Test.java</include>
                     </includes>
                     <useSystemClassLoader>true</useSystemClassLoader>
-                    <!-- Konfiguracja dla JUnit 5 -->
-                    <properties>
-                        <property>
-                            <name>junit.platform.version</name>
-                            <value>${junit.jupiter.version}</value>
-                        </property>
-                    </properties>
                 </configuration>
             </plugin>
 
-            <!-- Allure Maven Plugin do generowania raportów -->
+            <!-- Allure Plugin -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>

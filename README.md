@@ -9,31 +9,7 @@ src/test/resources/config.properties
 You’ll need the following libraries:
 Playwright for Java
 JUnit Jupiter (JUnit 5)
-(Optional) Maven or Gradle build system
-
-Example for pom.xml (Maven):
-
-xml
-<dependencies>
-<dependency>
-<groupId>com.microsoft.playwright</groupId>
-<artifactId>playwright</artifactId>
-<version>1.44.0</version>
-</dependency>
-<dependency>
-<groupId>org.junit.jupiter</groupId>
-<artifactId>junit-jupiter</artifactId>
-<version>5.10.0</version>
-<scope>test</scope>
-</dependency>
-</dependencies>
-Or for build.gradle (Gradle):
-
-groovy
-dependencies {
-testImplementation 'com.microsoft.playwright:playwright:1.44.0'
-testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-}
+ Maven build system
 
 🚀 Running the Tests
 Using Maven:
@@ -42,12 +18,11 @@ Using Gradle:
 ./gradlew test
 Playwright will automatically download its required browser binaries on the first run.
 
+Generating reports using Allure
+Under src/test/resources create allure.properties file with following line:
+**allure.results.directory=target/allure-results**
+Then run: mvn clean test allure:serve
 
-🧱 Key Components
-Component	Description
-LoginPage	Page Object Model for the login page
-LoginTest	Test class that performs login validation
-ConfigLoader	Loads properties from a centralized config file
 
 🛡️ Best Practices
 Use the Page Object Model (POM) for reusable UI logic
@@ -59,7 +34,6 @@ Use @BeforeAll/@AfterAll for test suite lifecycle management
 Avoid exposing passwords in logs or console output
 
 📌 Future Enhancements
-Add reporting (Allure, HTML)
 
 Extend test coverage to other user flows (add to cart, logout, etc.)
 

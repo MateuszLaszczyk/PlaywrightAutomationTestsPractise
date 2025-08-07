@@ -1,25 +1,26 @@
 package pw.mlaszczyk.automation.tests;
 
+import io.qameta.allure.*;
+import org.junit.jupiter.api.*;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import pw.mlaszczyk.automation.config.configLoader;
 import pw.mlaszczyk.automation.pages.pages.loginPage;
 import pw.mlaszczyk.automation.pages.pages.productPage;
 
+
+import java.io.ByteArrayInputStream;
 import java.util.Locale;
 
-public class addItemToCart {
+
+public class endToEndOrderPlacementTest {
     static Playwright playwright;
     static loginPage loginPage;
     static Browser browser;
     static Page page;
     static productPage productPage;
-
 
     // Credentials loaded from config.properties file
     private static String username;
@@ -57,9 +58,42 @@ public class addItemToCart {
         loginPage = new loginPage(page);
         productPage = new productPage(page);
     }
+
+    @Epic("Order Placement")
+    @Feature("End-to-End Order Flow")
+    @Story("User places an order after successful login")
+    @Severity(SeverityLevel.CRITICAL)
+    @DisplayName("E2E Order Placement Test")
+
     @Test
-    void addItemToCartAndVerifyCartQty() {
+    void endToEndOrderPlacement() {
         loginPage.loginAndVerify(username, password, mainPageUrl);
-        productPage.addItemToCartAndVerify(1);
+        productPage.endToEndOrderPlacement("Sauce Labs Fleece Jacket", "Mateusz", "Laszczyk", "80-126");
+        Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
+    }
+
+    /**
+     * Runs after each test.
+     * Closes the current browser page.
+     */
+    @AfterEach
+    void tearDown() {
+        if (page != null) {
+            page.close();
+        }
+    }
+
+    /**
+     * Runs once after all tests.
+     * Closes the browser and Playwright engine.
+     */
+    @AfterAll
+    static void tearDownAll() {
+        if (browser != null) {
+            browser.close();
+        }
+        if (playwright != null) {
+            playwright.close();
+        }
     }
 }
