@@ -28,8 +28,7 @@ public class productPage {
     public void endToEndOrderPlacement(String expectedProductName, String firstName, String lastName, String zip) {
         selectHighestFilter();
         assertPricesSortedDescending();
-        addItemToCart();
-        assertQtyProductAddedToCart(1);
+        addItemToCartAndVerify(1);
         navigateToCart();
         assertProductNameAddedToCart(expectedProductName);
         clickCheckoutButton();
@@ -52,9 +51,6 @@ public class productPage {
     /**
      * Adds a specific item to the cart.
      */
-    public void addItemToCart() {
-        page.locator("button[data-test='add-to-cart-sauce-labs-fleece-jacket']").click();
-    }
 
     /**
      * Navigates to the shopping cart page.
@@ -119,9 +115,16 @@ public class productPage {
      *
      * @param expectedCount expected number of items
      */
-    public void assertQtyProductAddedToCart(int expectedCount) {
+
+    /*
+    Adding SauceLabFleeceJacket item to cart, veryfing that qty is changed and remove button is visible
+    * */
+    public void addItemToCartAndVerify(int expectedCount) {
+        page.locator("button[data-test='add-to-cart-sauce-labs-fleece-jacket']").click();
         Locator cartBadge = page.locator("span[data-test='shopping-cart-badge']");
         assertThat(cartBadge).hasText(String.valueOf(expectedCount));
+        Locator removeButton = page.locator("button[data-test='remove-sauce-labs-fleece-jacket']");
+        assertThat(removeButton).isVisible();
     }
 
     /**
