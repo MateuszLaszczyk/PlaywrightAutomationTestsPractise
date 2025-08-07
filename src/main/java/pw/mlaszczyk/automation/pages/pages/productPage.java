@@ -18,20 +18,6 @@ public class productPage {
     }
 
     /**
-     * Logs in using provided credentials and verifies successful navigation to inventory page.
-     *
-     * @param username the username to log in
-     * @param password the password to log in
-     * @param mainPageUrl to validate URL after login
-     */
-    public void loginAndVerify(String username, String password,String mainPageUrl) {
-        page.locator("input[data-test='username']").fill(username);
-        page.locator("input[data-test='password']").fill(password);
-        page.locator("input[data-test='login-button']").click();
-        assertThat(page).hasURL(mainPageUrl);
-    }
-
-    /**
      * Executes the entire flow: sort, add item to cart, checkout, verify prices, complete order.
      *
      * @param expectedProductName product name expected in cart
