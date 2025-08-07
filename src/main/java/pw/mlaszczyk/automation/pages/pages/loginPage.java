@@ -1,6 +1,9 @@
 package pw.mlaszczyk.automation.pages.pages;
 
 import com.microsoft.playwright.Page;
+import io.cucumber.java.en.When;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 /**
  * Page Object Model (POM) class that encapsulates interactions with the login page
@@ -30,9 +33,10 @@ public class loginPage {
      * @param password the password to input
      * @param baseUrl the baseurl to input
      */
-    public void login(String username, String password) {
-        page.fill("#user-name", username);
-        page.fill("#password", password);
-        page.click("#login-button");
+    public void loginAndVerify(String username, String password,String mainPageUrl) {
+        page.locator("input[data-test='username']").fill(username);
+        page.locator("input[data-test='password']").fill(password);
+        page.locator("input[data-test='login-button']").click();
+        assertThat(page).hasURL(mainPageUrl);
     }
 }
