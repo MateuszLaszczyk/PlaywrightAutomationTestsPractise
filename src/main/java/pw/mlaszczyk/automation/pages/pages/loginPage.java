@@ -50,4 +50,12 @@ public class loginPage {
         assertThat(ErrorPopup).hasText("Epic sadface: Username and password do not match any user in this service");
 
     }
+    public void logOutFromTheWebSiteAndVerify(String baseUrl) {
+        Locator hamburgerIcon = page.locator("#react-burger-menu-btn");
+        Locator logOutButton = page.locator("a[data-test='logout-sidebar-link']");
+        Locator userName = page.locator("input[data-test='username']");
+        hamburgerIcon.click();
+        logOutButton.click();
+        assertThat(userName).isVisible();
+    }
 }

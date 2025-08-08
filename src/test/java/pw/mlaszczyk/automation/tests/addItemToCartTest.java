@@ -5,10 +5,7 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import io.qameta.allure.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import pw.mlaszczyk.automation.config.configLoader;
 import pw.mlaszczyk.automation.pages.pages.loginPage;
 import pw.mlaszczyk.automation.pages.pages.productPage;
@@ -39,7 +36,7 @@ public class addItemToCartTest {
         playwright = Playwright.create();
         Locale.setDefault(Locale.US); // set locale for consistent parsing.
         browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions().setHeadless(false) // show browser window
+                new BrowserType.LaunchOptions().setHeadless(true) // show browser window
         );
 
         username = configLoader.get("saucedemo.username");
@@ -73,4 +70,24 @@ public class addItemToCartTest {
         productPage.addItemToCartAndVerify(1);
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
+    @AfterEach
+    void tearDown() {
+        if (page != null) {
+            page.close();
+        }
+    }
+
+    /**
+     * Closes the browser and Playwright engine after all tests have completed.
+     */
+    @AfterAll
+    static void tearDownAll() {
+        if (browser != null) {
+            browser.close();
+        }
+        if (playwright != null) {
+            playwright.close();
+        }
+    }
 }
+
