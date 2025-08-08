@@ -1,0 +1,16 @@
+environments:
+  dev:
+    baseUrl: "https://www.saucedemo.com/"
+    timeout: 30000
+
+    # Konfiguracja przeglądarki
+    browser:
+      name: "chrome"
+      headless: true
+      windowSize: "1920x1080"
+
+    # Konfiguracja testów
+    test:
+      retries: 2
+      screenshotOnFailure: true
+      reportPath: "target/reports"
