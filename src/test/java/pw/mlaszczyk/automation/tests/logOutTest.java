@@ -35,6 +35,7 @@ public class logOutTest {
                 new BrowserType.LaunchOptions().setHeadless(true)
         );
 
+
         username = configLoader.get("saucedemo.username");
         password = configLoader.get("saucedemo.password");
         baseUrl = configLoader.get("saucedemo.baseUrl");
