@@ -43,6 +43,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-resources
+src/test/resources/config.properties
 
 
