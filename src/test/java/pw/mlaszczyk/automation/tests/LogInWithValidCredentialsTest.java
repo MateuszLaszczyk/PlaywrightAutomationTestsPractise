@@ -21,9 +21,9 @@ public class LogInWithValidCredentialsTest extends BaseTest {
         mainPageUrl = configLoader.get("saucedemo.mainPageUrl");
     }
 
-    @Epic("Logging in")
-    @Feature("Logging in")
-    @Story("User is able to log in")
+    @Epic("Login")
+    @Feature("Login")
+    @Story("User is able to login with valid credentials")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Logging in")
     @Test

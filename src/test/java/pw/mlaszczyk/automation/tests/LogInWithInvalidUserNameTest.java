@@ -19,9 +19,9 @@ public class LogInWithInvalidUserNameTest extends BaseTest {
         baseUrl = configLoader.get("saucedemo.baseUrl");
     }
 
-    @Epic("Invalid user name")
-    @Feature("Logging with invalid user name")
-    @Story("User tries to log in with invalid user name")
+    @Epic("Login")
+    @Feature("Login feature ")
+    @Story("User tries to login with INVALID user name")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Login with invalid user name")
     @Test
