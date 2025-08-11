@@ -23,9 +23,9 @@ public class LogInWithInvalidPasswordTest extends BaseTest {
     }
 
 
-    @Epic("Logging in ")
-    @Feature("Logging in feature")
-    @Story("User provides in valid password during logging in")
+    @Epic("Login")
+    @Feature("Login feature")
+    @Story("User provides INVALID password during login")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Invalid Password login")
     @Test

@@ -23,8 +23,8 @@ public class AddItemToCartTest extends BaseTest {
     }
 
     @Epic("Adding item to cart")
-    @Feature("Add item to cart")
-    @Story("User adds item to cart and verifying")
+    @Feature("Add item to cart feature")
+    @Story("User is able to add item to a cart")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Add item to cart")
     @Test

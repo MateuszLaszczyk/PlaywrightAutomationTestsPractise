@@ -27,9 +27,9 @@ public class EndToEndOrderPlacementTest extends BaseTest {
 
     @Epic("Order Placement")
     @Feature("End-to-End Order Flow")
-    @Story("User places an order after successful login")
+    @Story("User is able to place an order")
     @Severity(SeverityLevel.CRITICAL)
-    @DisplayName("E2E Order Placement Test")
+    @DisplayName("E2E Order Placement")
     @Test
     void endToEndOrderPlacement() {
         page.navigate(baseUrl);
