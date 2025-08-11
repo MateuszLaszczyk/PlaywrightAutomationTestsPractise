@@ -43,6 +43,22 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-config
+config/secrets.local.properties
 
 
+"" 
+"# IDE" 
+".idea/" 
+"*.iml" 
+"# Build" 
+"target/" 
+"# Allure" 
+"allure-results/" 
+"allure-report/" 
+".allure/" 
+"# Playwright (Java)" 
+".playwright/" 
+"# Sekrety" 
+"config/secrets.local.properties" 
+"config/secrets.yml" 
+"*.env" 

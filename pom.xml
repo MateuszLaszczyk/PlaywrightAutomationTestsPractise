@@ -1,7 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
@@ -9,10 +8,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <!-- Java / compilation -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+
+        <!-- library version -->
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
-        <playwright.version>1.38.0</playwright.version>
+        <playwright.version>1.46.0</playwright.version>
         <allure.version>2.24.0</allure.version>
         <allure.maven.plugin.version>2.11.2</allure.maven.plugin.version>
     </properties>
@@ -50,20 +52,39 @@
 
     <build>
         <plugins>
-            <!-- Surefire plugin for running tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-java</id>
+                        <goals><goal>enforce</goal></goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[21,)</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M8</version>
+                <version>3.2.5</version>
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
-                    <useSystemClassLoader>true</useSystemClassLoader>
+                    <useModulePath>false</useModulePath>
                 </configuration>
             </plugin>
 
-            <!-- Allure Maven plugin -->
+            <!-- Allure report -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>

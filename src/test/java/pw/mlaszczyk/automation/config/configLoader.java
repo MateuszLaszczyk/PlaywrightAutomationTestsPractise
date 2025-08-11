@@ -1,47 +1,49 @@
 package pw.mlaszczyk.automation.config;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 public class configLoader {
     private static final String CONFIG_PATH = "src/test/resources/config.properties";
+    private static final String LOCAL_SECRETS_PATH = "config/secrets.local.properties";
     private static final Properties properties = new Properties();
-    private static boolean isFileLoaded = false;
+    private static boolean isLoaded = false;
 
-    /**
-     * Returns the configuration value for the given key.
-     * Priority:
-     *   1. Environment Variable
-     *   2. config.properties (if present)
-     * Throws RuntimeException if the value is missing.
-     */
     public static String get(String key) {
-        // 1. Try ENV variable first (Jenkins-friendly)
-        String envValue = System.getenv(key);
-        if (envValue != null && !envValue.isEmpty()) {
-            return envValue;
-        }
+        if (!isLoaded) loadAll();
 
-        // 2. Fallback to config.properties
-        if (!isFileLoaded) {
-            loadPropertiesFromFile();
-        }
+        // 1) ENV: saucedemo.username -> SAUCEDEMO_USERNAME
+        String envKey = key.toUpperCase().replace('.', '_');
+        String envValue = System.getenv(envKey);
+        if (envValue != null && !envValue.isEmpty()) return envValue;
 
-        String propValue = properties.getProperty(key);
-        if (propValue == null || propValue.isEmpty()) {
+        // 2) Files
+        String val = properties.getProperty(key);
+        if (val == null || val.isEmpty()) {
             throw new RuntimeException("Missing config value for key: " + key);
         }
-
-        return propValue;
+        return val;
     }
 
-    private static void loadPropertiesFromFile() {
+    private static void loadAll() {
+        // basic config
         try (FileInputStream fis = new FileInputStream(CONFIG_PATH)) {
             properties.load(fis);
-            isFileLoaded = true;
         } catch (IOException e) {
-            throw new RuntimeException("Unable to load configuration from: " + CONFIG_PATH, e);
+            throw new RuntimeException("Unable to load " + CONFIG_PATH, e);
         }
+
+        // local secrets
+        File local = new File(LOCAL_SECRETS_PATH);
+        if (local.exists()) {
+            try (FileInputStream fis = new FileInputStream(local)) {
+                Properties sec = new Properties();
+                sec.load(fis);
+                sec.forEach((k, v) -> properties.put(k, v)); // override
+            } catch (IOException ignored) {}
+        }
+        isLoaded = true;
     }
 }
