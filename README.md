@@ -1,44 +1,76 @@
-🧪 Playwright Java Test Automation Project
-This project is a test automation framework built using Microsoft Playwright with Java and JUnit 5. It includes modular page objects and configuration management for scalable and maintainable test development.
+# Playwright Java – E2E Tests
 
-⚙️ Configuration
-Create a file at:
-src/test/resources/config.properties
+Minimal E2E suite using **Playwright for Java** + **JUnit 5** + **Maven**.
 
-🧩 Dependencies
-You’ll need the following libraries:
-Playwright for Java
-JUnit Jupiter (JUnit 5)
- Maven build system
+## Requirements
+- JDK 21 (Temurin LTS recommended)
+- Maven 3.9+
 
-🚀 Running the Tests
-Using Maven:
-mvn test
-Using Gradle:
-./gradlew test
-Playwright will automatically download its required browser binaries on the first run.
+## Project layout
+src/test/java/...
+└─ pw/mlaszczyk/automation/tests/BaseTest.java # shared setup
+└─ pw/mlaszczyk/automation/config/configLoader.java
+src/test/resources/config.properties # non-secret config
+config/secrets.example.properties # template (tracked)
+config/secrets.local.properties # real secrets (ignored)
 
-Generating reports using Allure
-Under src/test/resources create allure.properties file with following line:
-**allure.results.directory=target/allure-results**
-Then run: mvn clean test allure:serve
+## Configuration
 
+**Public (tracked):** `src/test/resources/config.properties`
+properties
+# Browser
+browser.headless=false
+browser.name=chrome   # chromium | chrome | firefox | webkit
 
-🛡️ Best Practices
-Use the Page Object Model (POM) for reusable UI logic
+# App
+saucedemo.baseUrl=https://www.saucedemo.com
+saucedemo.mainPageUrl=https://www.saucedemo.com/inventory.html
 
-Store credentials in external files (never hardcode)
+# Non-secret test data
+saucedemo.invalidusername=<INVALID_USERNAME_FOR_NEGATIVE_TEST>
+Secrets (never commit real values):
 
-Use @BeforeAll/@AfterAll for test suite lifecycle management
+Local file (dev): config/secrets.local.properties
 
-Avoid exposing passwords in logs or console output
+properties
+saucedemo.username=<YOUR_USERNAME>
+saucedemo.password=<YOUR_PASSWORD>
+Or environment variables (CI):
+The loader maps . → _ and uppercases:
 
-📌 Future Enhancements
+pgsql
+saucedemo.username  → SAUCEDEMO_USERNAME
+saucedemo.password  → SAUCEDEMO_PASSWORD
+browser.headless    → BROWSER_HEADLESS
+browser.name        → BROWSER_NAME
 
-Extend test coverage to other user flows (add to cart, logout, etc.)
+How to run (local)
+mvn clean test
+First run downloads Playwright browsers. Control headless/GUI via browser.headless (file or ENV).
 
-Integrate with CI/CD (GitHub Actions, GitLab, Jenkins)
+BaseTest (what you get)
+@BeforeAll → Playwright + browser launch (type/headless from config)
 
-👨‍💻 Author
-M.Laszczyk
-"# test push" 
+@BeforeEach → new BrowserContext + Page per test
+
+@AfterEach → closes context
+
+@AfterAll → closes browser/Playwright
+Your tests just extends BaseTest and use the page field.
+
+CI (Jenkins – recommended)
+Use Credentials Binding and bind secrets to:
+
+SAUCEDEMO_USERNAME, SAUCEDEMO_PASSWORD
+Build step:
+
+bat
+mvn -B -U clean test
+(Optional) Allure report:
+
+bat
+mvn -B -DskipTests=true verify
+
+Troubleshooting (quick)
+Missing config value → set the key in config.properties, secrets.local.properties, or ENV (remember dot → underscore).
+4,00 vs 4.00 → enforce Locale.US and/or en-US context, or assert with a regex [,.].
