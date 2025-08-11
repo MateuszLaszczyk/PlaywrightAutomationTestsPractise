@@ -7,7 +7,7 @@ import pw.mlaszczyk.automation.pages.pages.loginPage;
 
 import java.io.ByteArrayInputStream;
 
-public class LoginTestWithInvalidUserNameTest extends BaseTest {
+public class LogInWithInvalidUserNameTest extends BaseTest {
     private static String invalidUserName;
     private static String password;
     private static String baseUrl;
@@ -28,8 +28,8 @@ public class LoginTestWithInvalidUserNameTest extends BaseTest {
     void loginWithInvalidUserNameAndVerify() {
         page.navigate(baseUrl);
         loginPage login = new loginPage(page);
-
         login.loginWithInvalidUserNameAndVerify(invalidUserName, password);
+
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
 }

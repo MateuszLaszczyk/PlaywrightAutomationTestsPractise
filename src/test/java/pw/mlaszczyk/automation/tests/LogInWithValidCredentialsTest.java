@@ -7,7 +7,7 @@ import pw.mlaszczyk.automation.pages.pages.loginPage;
 
 import java.io.ByteArrayInputStream;
 
-public class LoginTestWithValidCredentialsTest extends BaseTest {
+public class LogInWithValidCredentialsTest extends BaseTest {
     private static String username;
     private static String password;
     private static String baseUrl;

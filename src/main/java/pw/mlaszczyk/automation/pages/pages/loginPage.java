@@ -34,6 +34,7 @@ public class loginPage {
      * @param password        the password to input
      * @param baseUrl         the baseurl to input
      * @param invalidUserName the InvalidUserName to input
+     * @param invalidPassword the invalid password to input
      */
     public void loginAndVerify(String username, String password, String mainPageUrl) {
         page.locator("input[data-test='username']").fill(username);
@@ -50,6 +51,15 @@ public class loginPage {
         assertThat(ErrorPopup).hasText("Epic sadface: Username and password do not match any user in this service");
 
     }
+    public void loginWithInvalidPasswordAndVerify(String username, String invalidPassword) {
+        page.locator("input[data-test='username']").fill(username);
+        page.locator("input[data-test='password']").fill(invalidPassword);
+        page.locator("input[data-test='login-button']").click();
+
+        Locator ErrorPopup = page.locator("h3[data-test='error']");
+        assertThat(ErrorPopup).hasText("Epic sadface: Username and password do not match any user in this service");
+    }
+
     public void logOutFromTheWebSiteAndVerify(String baseUrl) {
         Locator hamburgerIcon = page.locator("#react-burger-menu-btn");
         Locator logOutButton = page.locator("a[data-test='logout-sidebar-link']");
