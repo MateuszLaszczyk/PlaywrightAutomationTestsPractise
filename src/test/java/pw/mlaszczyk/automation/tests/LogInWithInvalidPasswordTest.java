@@ -5,8 +5,8 @@ import io.qameta.allure.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pw.mlaszczyk.automation.config.configLoader;
-import pw.mlaszczyk.automation.pages.pages.loginPage;
+import pw.mlaszczyk.automation.config.ConfigLoader;
+import pw.mlaszczyk.automation.pages.pages.LoginPage;
 
 import java.io.ByteArrayInputStream;
 
@@ -17,9 +17,9 @@ public class LogInWithInvalidPasswordTest extends BaseTest {
 
     @BeforeAll
     static void loadConfig() {
-        invalidPassword = configLoader.get("saucedemo.invalidPassword");
-        userName = configLoader.get("saucedemo.username");
-        baseUrl = configLoader.get("saucedemo.baseUrl");
+        invalidPassword = ConfigLoader.get("saucedemo.invalidPassword");
+        userName = ConfigLoader.get("saucedemo.username");
+        baseUrl = ConfigLoader.get("saucedemo.baseUrl");
     }
 
 
@@ -31,7 +31,7 @@ public class LogInWithInvalidPasswordTest extends BaseTest {
     @Test
     void testLogInWithInvalidPassword() {
         page.navigate(baseUrl);
-        loginPage login = new loginPage(page);
+        LoginPage login = new LoginPage(page);
         login.loginWithInvalidPasswordAndVerify(userName, invalidPassword);
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));

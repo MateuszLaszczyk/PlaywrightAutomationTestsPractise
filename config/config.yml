@@ -3,13 +3,13 @@ environments:
     baseUrl: "https://www.saucedemo.com/"
     timeout: 30000
 
-    # Konfiguracja przeglądarki
+    # website config
     browser:
       name: "chrome"
       headless: true
       windowSize: "1920x1080"
 
-    # Konfiguracja testów
+    # test config
     test:
       retries: 2
       screenshotOnFailure: true

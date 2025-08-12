@@ -2,9 +2,9 @@ package pw.mlaszczyk.automation.tests;
 
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
-import pw.mlaszczyk.automation.config.configLoader;
-import pw.mlaszczyk.automation.pages.pages.loginPage;
-import pw.mlaszczyk.automation.pages.pages.productPage;
+import pw.mlaszczyk.automation.config.ConfigLoader;
+import pw.mlaszczyk.automation.pages.pages.LoginPage;
+import pw.mlaszczyk.automation.pages.pages.ProductPage;
 
 import java.io.ByteArrayInputStream;
 
@@ -16,10 +16,10 @@ public class AddItemToCartTest extends BaseTest {
 
     @BeforeAll
     static void loadConfig() {
-        username = configLoader.get("saucedemo.username");
-        password = configLoader.get("saucedemo.password");
-        baseUrl = configLoader.get("saucedemo.baseUrl");
-        mainPageUrl = configLoader.get("saucedemo.mainPageUrl");
+        username = ConfigLoader.get("saucedemo.username");
+        password = ConfigLoader.get("saucedemo.password");
+        baseUrl = ConfigLoader.get("saucedemo.baseUrl");
+        mainPageUrl = ConfigLoader.get("saucedemo.mainPageUrl");
     }
 
     @Epic("Adding item to cart")
@@ -30,8 +30,8 @@ public class AddItemToCartTest extends BaseTest {
     @Test
     void addItemToCartAndVerifyCartQty() {
         page.navigate(baseUrl);
-        loginPage login = new loginPage(page);
-        productPage products = new productPage(page);
+        LoginPage login = new LoginPage(page);
+        ProductPage products = new ProductPage(page);
 
         login.loginAndVerify(username, password, mainPageUrl);
         products.addItemToCartAndVerify(1);

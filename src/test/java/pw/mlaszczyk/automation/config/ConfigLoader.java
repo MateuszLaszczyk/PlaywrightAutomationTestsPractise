@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class configLoader {
+public class ConfigLoader {
     private static final String CONFIG_PATH = "src/test/resources/config.properties";
     private static final String LOCAL_SECRETS_PATH = "config/secrets.local.properties";
     private static final Properties properties = new Properties();
