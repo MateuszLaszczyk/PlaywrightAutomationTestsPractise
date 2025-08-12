@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
 
+import java.io.ByteArrayInputStream;
+
 public class LockedOutUserTest extends BaseTest {
      private static String lockedOutUserName;
      private static String password;
@@ -32,6 +34,7 @@ public class LockedOutUserTest extends BaseTest {
          LoginPage login = new LoginPage(page);
 
          login.checkIfLockedOutUserCanLogin(lockedOutUserName,  password);
+        Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
 
 }
