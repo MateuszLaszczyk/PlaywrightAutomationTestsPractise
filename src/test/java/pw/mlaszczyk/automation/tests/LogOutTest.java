@@ -2,8 +2,8 @@ package pw.mlaszczyk.automation.tests;
 
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
-import pw.mlaszczyk.automation.config.configLoader;
-import pw.mlaszczyk.automation.pages.pages.loginPage;
+import pw.mlaszczyk.automation.config.ConfigLoader;
+import pw.mlaszczyk.automation.pages.pages.LoginPage;
 
 public class LogOutTest extends BaseTest {
     private static String username;
@@ -13,10 +13,10 @@ public class LogOutTest extends BaseTest {
 
     @BeforeAll
     static void loadConfig() {
-        username = configLoader.get("saucedemo.username");
-        password = configLoader.get("saucedemo.password");
-        baseUrl = configLoader.get("saucedemo.baseUrl");
-        mainPageUrl = configLoader.get("saucedemo.mainPageUrl");
+        username = ConfigLoader.get("saucedemo.username");
+        password = ConfigLoader.get("saucedemo.password");
+        baseUrl = ConfigLoader.get("saucedemo.baseUrl");
+        mainPageUrl = ConfigLoader.get("saucedemo.mainPageUrl");
     }
 
     @Epic("Logging out")
@@ -27,7 +27,7 @@ public class LogOutTest extends BaseTest {
     @Test
     void shouldLogOut() {
         page.navigate(baseUrl);
-        loginPage login = new loginPage(page);
+        LoginPage login = new LoginPage(page);
 
         login.loginAndVerify(username, password, mainPageUrl);
         login.logOutFromTheWebSiteAndVerify(baseUrl);

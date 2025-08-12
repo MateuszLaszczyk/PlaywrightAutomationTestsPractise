@@ -2,7 +2,7 @@ package pw.mlaszczyk.automation.tests;
 
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.*;
-import pw.mlaszczyk.automation.config.configLoader;
+import pw.mlaszczyk.automation.config.ConfigLoader;
 
 public abstract class BaseTest {
     protected static Playwright playwright;
@@ -46,7 +46,7 @@ public abstract class BaseTest {
 
     private static String safeGet(String key, String def) {
         try {
-            String v = configLoader.get(key);
+            String v = ConfigLoader.get(key);
             return (v == null || v.isBlank()) ? def : v;
         } catch (Exception e) {
             return def;

@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class productPage {
+public class ProductPage {
     private final Page page;
 
-    public productPage(Page page) {
+    public ProductPage(Page page) {
         this.page = page;
     }
 

@@ -13,7 +13,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
  * <p>This class is responsible for performing actions related to the login process,
  * such as entering the username, password, and clicking the login button.
  */
-public class loginPage {
+public class LoginPage {
     private final Page page;
 
     /**
@@ -22,7 +22,7 @@ public class loginPage {
      *
      * @param page the Playwright page representing the current browser tab
      */
-    public loginPage(Page page) {
+    public LoginPage(Page page) {
         this.page = page;
     }
 
@@ -35,6 +35,7 @@ public class loginPage {
      * @param baseUrl         the baseurl to input
      * @param invalidUserName the InvalidUserName to input
      * @param invalidPassword the invalid password to input
+     * @param lockedOutUserName the lockedout user
      */
     public void loginAndVerify(String username, String password, String mainPageUrl) {
         page.locator("input[data-test='username']").fill(username);
@@ -51,6 +52,7 @@ public class loginPage {
         assertThat(ErrorPopup).hasText("Epic sadface: Username and password do not match any user in this service");
 
     }
+
     public void loginWithInvalidPasswordAndVerify(String username, String invalidPassword) {
         page.locator("input[data-test='username']").fill(username);
         page.locator("input[data-test='password']").fill(invalidPassword);
@@ -68,4 +70,13 @@ public class loginPage {
         logOutButton.click();
         assertThat(userName).isVisible();
     }
+
+    public void checkIfLockedOutUserCanLogin(String lockedOutUserName, String Password) {
+        page.locator("input[data-test='username']").fill(lockedOutUserName);
+        page.locator("input[data-test='password']").fill(Password);
+        page.locator("input[data-test='login-button']").click();
+        Locator errorLoginPopup = page.locator("h3[data-test='error']");
+        assertThat(errorLoginPopup).hasText("Epic sadface: Sorry, this user has been locked out.");
+    }
 }
+

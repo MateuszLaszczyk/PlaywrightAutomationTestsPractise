@@ -2,8 +2,8 @@ package pw.mlaszczyk.automation.tests;
 
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
-import pw.mlaszczyk.automation.config.configLoader;
-import pw.mlaszczyk.automation.pages.pages.loginPage;
+import pw.mlaszczyk.automation.config.ConfigLoader;
+import pw.mlaszczyk.automation.pages.pages.LoginPage;
 
 import java.io.ByteArrayInputStream;
 
@@ -14,9 +14,9 @@ public class LogInWithInvalidUserNameTest extends BaseTest {
 
     @BeforeAll
     static void loadConfig() {
-        invalidUserName = configLoader.get("saucedemo.invalidusername");
-        password = configLoader.get("saucedemo.password");
-        baseUrl = configLoader.get("saucedemo.baseUrl");
+        invalidUserName = ConfigLoader.get("saucedemo.invalidusername");
+        password = ConfigLoader.get("saucedemo.password");
+        baseUrl = ConfigLoader.get("saucedemo.baseUrl");
     }
 
     @Epic("Login")
@@ -27,7 +27,7 @@ public class LogInWithInvalidUserNameTest extends BaseTest {
     @Test
     void loginWithInvalidUserNameAndVerify() {
         page.navigate(baseUrl);
-        loginPage login = new loginPage(page);
+        LoginPage login = new LoginPage(page);
         login.loginWithInvalidUserNameAndVerify(invalidUserName, password);
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
