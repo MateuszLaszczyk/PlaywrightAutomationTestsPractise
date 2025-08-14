@@ -34,7 +34,8 @@ public class AddItemToCartTest extends BaseTest {
         ProductPage products = new ProductPage(page);
 
         login.loginAndVerify(username, password, mainPageUrl);
-        products.addItemToCartAndVerify(1);
+        products.addItemToCart();
+        products.verifyThatItemIsAddedToCart(1);
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }

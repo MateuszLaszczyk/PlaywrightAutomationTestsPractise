@@ -28,7 +28,8 @@ public class ProductPage {
     public void endToEndOrderPlacement(String expectedProductName, String firstName, String lastName, String zip) {
         selectHighestFilter();
         assertPricesSortedDescending();
-        addItemToCartAndVerify(1);
+        addItemToCart();
+        verifyThatItemIsAddedToCart(1);
         navigateToCart();
         assertProductNameAddedToCart(expectedProductName);
         clickCheckoutButton();
@@ -119,8 +120,12 @@ public class ProductPage {
     /*
     Adding SauceLabFleeceJacket item to cart, veryfing that qty is changed and remove button is visible
     * */
-    public void addItemToCartAndVerify(int expectedCount) {
+    public void addItemToCart() {
         page.locator("button[data-test='add-to-cart-sauce-labs-fleece-jacket']").click();
+
+    }
+
+    public void verifyThatItemIsAddedToCart(int expectedCount) {
         Locator cartBadge = page.locator("span[data-test='shopping-cart-badge']");
         assertThat(cartBadge).hasText(String.valueOf(expectedCount));
         Locator removeButton = page.locator("button[data-test='remove-sauce-labs-fleece-jacket']");
