@@ -1,28 +1,21 @@
 Feature: Place order
+  As a shopper
+  I want to purchase products
 
-  Scenario: Login with valid credentials and place order
-    Given User is logged in
-    When User adds any item to cart
-    Then Cart quantity should be udpated
-    When User navigates to cart
-    Then User is able to see following information:
-      | Quantity | ProductName | ProductDescription | ProductPrice | RemoveButton | ContinueShoppingButton | Checkout |
-    When User click on 'Checkout' button
-    Then 'Checkout: Your Information' page should be displayed containing three fields:
-      | First Name     |
-      | Last Name      |
-      | Zip/PostalCode |
-    When User provides valid credentials to all the fields and click 'Continue'
-    Then 'Checkout: Overview' page should be displayed with following information:
-      | Quantity             | ProductName           |
-      | ProductDescription   | ProductPrice          |
-      | Payment Information: | Shipping Information: |
-      | Price Total          | Item total            |
-      | Tax                  | Total:                |
-    When User click on 'Finish' button
-    Then 'Checkout: Complete!' page should be displayed with following information:
-      | Green checkmark logo           |
-      | OrderPlacedInformation         |
-      | OrderPlacedShippingDescription |
-    And Following button:
-      | Back Home |
+  @smoke
+  Scenario: Place order with one item
+    Given I am logged in as "standard_user"
+    And I add product "Sauce Labs Backpack" to the cart
+    When I go to the cart
+    Then the cart shows:
+      | Product             | Quantity |
+      | Sauce Labs Backpack | 1        |
+    When I proceed to checkout
+    And I provide shipping information:
+      | FirstName | LastName | ZipCode |
+      | Jan       | Kowalski | 80-001  |
+    And I continue to overview
+    Then I see order summary with item total, tax and total
+    When I finish the order
+    Then I see order confirmation
+    And I see a "Back Home" button

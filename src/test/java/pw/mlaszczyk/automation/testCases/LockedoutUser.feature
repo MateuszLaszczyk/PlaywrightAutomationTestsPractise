@@ -1,7 +1,6 @@
-Feature: Lockedout users
-
-  Scenario: User is not able to login into the application if his account is lockedout
-    Given User account is lockedout
-    When User triest to login into lockedout account
-    Then He will not be able to and following error message will be displayed:
-      | Epic sadface: Sorry, this user has been locked out. |
+Feature: Locked out users
+  @negative
+  Scenario: Locked out user cannot login
+    Given I am on the login page
+    When I login with username "locked_out_user" and password "secret_sauce"
+    Then I see error "Sorry, this user has been locked out."
