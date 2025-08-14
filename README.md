@@ -74,3 +74,4 @@ mvn -B -DskipTests=true verify
 Troubleshooting (quick)
 Missing config value → set the key in config.properties, secrets.local.properties, or ENV (remember dot → underscore).
 4,00 vs 4.00 → enforce Locale.US and/or en-US context, or assert with a regex [,.].
+
