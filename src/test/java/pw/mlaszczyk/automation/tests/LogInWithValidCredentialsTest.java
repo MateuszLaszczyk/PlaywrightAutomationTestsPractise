@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
 
+
 import java.io.ByteArrayInputStream;
 
 public class LogInWithValidCredentialsTest extends BaseTest {
@@ -12,6 +13,7 @@ public class LogInWithValidCredentialsTest extends BaseTest {
     private static String password;
     private static String baseUrl;
     private static String mainPageUrl;
+    private LoginPage loginPage;
 
     @BeforeAll
     static void loadConfig() {
@@ -19,6 +21,12 @@ public class LogInWithValidCredentialsTest extends BaseTest {
         password = ConfigLoader.get("saucedemo.password");
         baseUrl = ConfigLoader.get("saucedemo.baseUrl");
         mainPageUrl = ConfigLoader.get("saucedemo.mainPageUrl");
+    }
+
+    @BeforeEach
+    void setUpPages() {
+        loginPage = new LoginPage(page);
+
     }
 
     @Epic("Login")
@@ -29,9 +37,11 @@ public class LogInWithValidCredentialsTest extends BaseTest {
     @Test
     void shouldLoginWithValidCredentials() {
         page.navigate(baseUrl);
-        LoginPage login = new LoginPage(page);
 
-        login.loginAndVerify(username, password, mainPageUrl);
+
+        loginPage.loginToTheWebsite(username, password);
+        loginPage.assertThatUserIsLoggedIn(mainPageUrl);
+
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
 }

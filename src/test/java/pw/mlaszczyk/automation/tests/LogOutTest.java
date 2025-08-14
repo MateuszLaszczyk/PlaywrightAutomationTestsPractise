@@ -5,11 +5,13 @@ import org.junit.jupiter.api.*;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
 
+
 public class LogOutTest extends BaseTest {
     private static String username;
     private static String password;
     private static String baseUrl;
     private static String mainPageUrl;
+    private LoginPage loginPage;
 
     @BeforeAll
     static void loadConfig() {
@@ -17,6 +19,11 @@ public class LogOutTest extends BaseTest {
         password = ConfigLoader.get("saucedemo.password");
         baseUrl = ConfigLoader.get("saucedemo.baseUrl");
         mainPageUrl = ConfigLoader.get("saucedemo.mainPageUrl");
+    }
+
+    @BeforeEach
+    void setUpPages() {
+        loginPage = new LoginPage(page);
     }
 
     @Epic("Logging out")
@@ -27,9 +34,11 @@ public class LogOutTest extends BaseTest {
     @Test
     void shouldLogOut() {
         page.navigate(baseUrl);
-        LoginPage login = new LoginPage(page);
 
-        login.loginAndVerify(username, password, mainPageUrl);
-        login.logOutFromTheWebSiteAndVerify(baseUrl);
+        loginPage.loginToTheWebsite(username, password);
+        loginPage.assertThatUserIsLoggedIn(mainPageUrl);
+
+        loginPage.logOutFromTheWebSite();
+        loginPage.assertThatUserIsLoggedOut();
     }
 }
