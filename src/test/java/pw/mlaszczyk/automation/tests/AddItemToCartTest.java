@@ -2,6 +2,7 @@ package pw.mlaszczyk.automation.tests;
 
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
+import pw.mlaszczyk.automation.assertions.CartAssertions;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
 import pw.mlaszczyk.automation.pages.pages.ProductPage;
@@ -44,8 +45,11 @@ public class AddItemToCartTest extends BaseTest {
         loginPage.assertThatUserIsLoggedIn(mainPageUrl);
 
 
-        productPage.addItemToCart();
-        productPage.verifyThatItemIsAddedToCart(1);
+        productPage.addSauceLabsFleeceJacketToCart();
+        CartAssertions.assertCartItemCount(productPage.cartBadge(), 1);
+        productPage.navigateToCart();
+        CartAssertions.assertProductNameInCart(productPage.productNameInCart(), "Sauce Labs Fleece Jacket");
+
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
