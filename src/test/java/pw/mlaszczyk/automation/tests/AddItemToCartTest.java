@@ -13,6 +13,9 @@ public class AddItemToCartTest extends BaseTest {
     private static String password;
     private static String baseUrl;
     private static String mainPageUrl;
+    private LoginPage loginPage;
+    private ProductPage productPage;
+
 
     @BeforeAll
     static void loadConfig() {
@@ -20,6 +23,12 @@ public class AddItemToCartTest extends BaseTest {
         password = ConfigLoader.get("saucedemo.password");
         baseUrl = ConfigLoader.get("saucedemo.baseUrl");
         mainPageUrl = ConfigLoader.get("saucedemo.mainPageUrl");
+    }
+
+    @BeforeEach
+    void setUpPages() {
+        loginPage = new LoginPage(page);
+        productPage = new ProductPage(page);
     }
 
     @Epic("Adding item to cart")
@@ -30,12 +39,13 @@ public class AddItemToCartTest extends BaseTest {
     @Test
     void addItemToCartAndVerifyCartQty() {
         page.navigate(baseUrl);
-        LoginPage login = new LoginPage(page);
-        ProductPage products = new ProductPage(page);
 
-        login.loginAndVerify(username, password, mainPageUrl);
-        products.addItemToCart();
-        products.verifyThatItemIsAddedToCart(1);
+        loginPage.loginToTheWebsite(username, password);
+        loginPage.assertThatUserIsLoggedIn(mainPageUrl);
+
+
+        productPage.addItemToCart();
+        productPage.verifyThatItemIsAddedToCart(1);
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }

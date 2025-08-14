@@ -4,16 +4,18 @@ import com.microsoft.playwright.*;
 import org.junit.jupiter.api.*;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 
+
 public abstract class BaseTest {
     protected static Playwright playwright;
     protected static Browser browser;
     protected Page page;
 
+
     @BeforeAll
     static void globalSetup() {
         playwright = Playwright.create();
 
-        String headlessStr = safeGet("browser.headless", "true");
+        String headlessStr = safeGet("browser.headless", "false");
         boolean headless = Boolean.parseBoolean(headlessStr);
 
         String browserName = safeGet("browser.name", "chromium"); // "chrome" | "chromium" | "firefox" | "webkit"
@@ -36,6 +38,7 @@ public abstract class BaseTest {
     void setupPage() {
         BrowserContext context = browser.newContext();
         page = context.newPage();
+
     }
 
     @AfterAll
@@ -47,7 +50,7 @@ public abstract class BaseTest {
     private static String safeGet(String key, String def) {
         try {
             String v = ConfigLoader.get(key);
-            return (v == null || v.isBlank()) ? def : v;
+            return v.isBlank() ? def : v;
         } catch (Exception e) {
             return def;
         }

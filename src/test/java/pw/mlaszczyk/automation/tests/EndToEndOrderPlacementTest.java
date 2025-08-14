@@ -14,6 +14,8 @@ public class EndToEndOrderPlacementTest extends BaseTest {
     private static String password;
     private static String baseUrl;
     private static String mainPageUrl;
+    private LoginPage loginPage;
+    private ProductPage productPage;
 
     @BeforeAll
     static void loadConfig() {
@@ -24,6 +26,12 @@ public class EndToEndOrderPlacementTest extends BaseTest {
         mainPageUrl = ConfigLoader.get("saucedemo.mainPageUrl");
     }
 
+    @BeforeEach
+    void setUpPages() {
+        loginPage = new LoginPage(page);
+        productPage = new ProductPage(page);
+    }
+
     @Epic("Order Placement")
     @Feature("End-to-End Order Flow")
     @Story("User is able to place an order")
@@ -32,11 +40,12 @@ public class EndToEndOrderPlacementTest extends BaseTest {
     @Test
     void endToEndOrderPlacement() {
         page.navigate(baseUrl);
-        LoginPage login = new LoginPage(page);
-        ProductPage products = new ProductPage(page);
 
-        login.loginAndVerify(username, password, mainPageUrl);
-        products.endToEndOrderPlacement("Sauce Labs Fleece Jacket", "Mateusz", "Laszczyk", "80-126");
+        loginPage.loginToTheWebsite(username, password);
+        loginPage.assertThatUserIsLoggedIn(mainPageUrl);
+
+        productPage.endToEndOrderPlacement("Sauce Labs Fleece Jacket", "Mateusz", "Laszczyk", "80-126");
+        productPage.assertOrderPlacement();
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
