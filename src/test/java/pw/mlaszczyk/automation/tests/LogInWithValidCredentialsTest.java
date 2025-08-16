@@ -8,6 +8,8 @@ import pw.mlaszczyk.automation.pages.pages.LoginPage;
 
 import java.io.ByteArrayInputStream;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 public class LogInWithValidCredentialsTest extends BaseTest {
     private static String username;
     private static String password;
@@ -36,11 +38,14 @@ public class LogInWithValidCredentialsTest extends BaseTest {
     @DisplayName("Logging in")
     @Test
     void shouldLoginWithValidCredentials() {
+        // 1. Navigate to the login page
         page.navigate(baseUrl);
-
-
+        // 2. Provide valid credentials
         loginPage.loginToTheWebsite(username, password);
-        loginPage.assertThatUserIsLoggedIn(mainPageUrl);
+        // 3. Assert that user is logged in
+        assertThat(page).hasURL(mainPageUrl);
+
+
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }

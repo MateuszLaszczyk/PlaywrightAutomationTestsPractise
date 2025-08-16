@@ -1,5 +1,6 @@
 package pw.mlaszczyk.automation.tests;
 
+import com.microsoft.playwright.Locator;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import pw.mlaszczyk.automation.config.ConfigLoader;
@@ -8,11 +9,14 @@ import pw.mlaszczyk.automation.pages.pages.LoginPage;
 
 import java.io.ByteArrayInputStream;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 public class LogInWithInvalidUserNameTest extends BaseTest {
     private static String invalidUserName;
     private static String password;
     private static String baseUrl;
     private LoginPage loginPage;
+
 
     @BeforeAll
     static void loadConfig() {
@@ -37,7 +41,8 @@ public class LogInWithInvalidUserNameTest extends BaseTest {
         page.navigate(baseUrl);
 
         loginPage.loginWithInvalidUserName(invalidUserName, password);
-        loginPage.asserThatInvalidUserNameDoesntWork();
+        assertThat(loginPage.lockedUserPopup()).hasText("Epic sadface: Username and password do not match any user in this service");
+
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }

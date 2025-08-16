@@ -30,22 +30,26 @@ public class LoginPage {
      * Logs in to the application by filling in the username and password fields,
      * and clicking the login button.
      *
-     * @param username        the username to input
-     * @param password        the password to input
-     * @param baseUrl         the baseurl to input
-     * @param invalidUserName the InvalidUserName to input
-     * @param invalidPassword the invalid password to input
-     * @param lockedOutUserName the lockedout user
      */
-    public void loginToTheWebsite(String username, String password) {
-        page.locator("input[data-test='username']").fill(username);
-        page.locator("input[data-test='password']").fill(password);
-        page.locator("input[data-test='login-button']").click();
+
+    Locator userNameField (){
+        return page.locator("input[data-test='username']");
     }
 
-    public void assertThatUserIsLoggedIn(String mainPageUrl){
-        assertThat(page).hasURL(mainPageUrl);
+    Locator passwordField (){
+        return page.locator("input[data-test='password']");
     }
+
+    public Locator loginButton(){
+        return page.locator("input[data-test='login-button']");
+    }
+
+    public void loginToTheWebsite(String username, String password) {
+        userNameField().fill(username);
+        passwordField().fill(password);
+        loginButton().click();
+    }
+
 
     public void loginWithInvalidUserName(String InvalidUserName, String password) {
         page.locator("input[data-test='username']").fill(InvalidUserName);
@@ -54,10 +58,6 @@ public class LoginPage {
 
     }
 
-    public void asserThatInvalidUserNameDoesntWork(){
-        Locator ErrorPopup = page.locator("h3[data-test='error']");
-        assertThat(ErrorPopup).hasText("Epic sadface: Username and password do not match any user in this service");
-    }
 
     public void loginWithInvalidPassword(String username, String invalidPassword) {
         page.locator("input[data-test='username']").fill(username);
@@ -68,18 +68,32 @@ public class LoginPage {
         assertThat(ErrorPopup).hasText("Epic sadface: Username and password do not match any user in this service");
     }
 
-    public void assertThatInvalidPasswordDoesntWork(){
+    public void assertThatInvalidCredentialsDoesntWork(){
         Locator ErrorPopup = page.locator("h3[data-test='error']");
         assertThat(ErrorPopup).hasText("Epic sadface: Username and password do not match any user in this service");
     }
 
+    public  Locator lockedUserPopup (){
+        return  page.locator("h3[data-test='error']");
+    }
+
+
     public void logOutFromTheWebSite() {
-        Locator hamburgerIcon = page.locator("#react-burger-menu-btn");
-        Locator logOutButton = page.locator("a[data-test='logout-sidebar-link']");
-        hamburgerIcon.click();
-        logOutButton.click();
+        hamburgerIcon().click();
+        logOutButton().click();
 
     }
+
+    Locator hamburgerIcon(){
+        return  page.locator("#react-burger-menu-btn");
+    }
+
+    Locator logOutButton(){
+       return page.locator("a[data-test='logout-sidebar-link']");
+    }
+
+
+
     public void assertThatUserIsLoggedOut(){
         Locator userName = page.locator("input[data-test='username']");
         assertThat(userName).isVisible();

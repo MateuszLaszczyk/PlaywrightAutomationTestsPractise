@@ -10,7 +10,7 @@ public class ProductPage {
         this.page = page;
     }
 
-    // ===== Locators =====
+    //  Locators
     public Locator dropDownList() { return page.locator("select[data-test='product-sort-container']"); }
     public Locator cartIcon() { return page.locator("a[data-test='shopping-cart-link']"); }
     public Locator checkoutButton() { return page.locator("button[data-test='checkout']"); }
@@ -29,7 +29,7 @@ public class ProductPage {
     public Locator orderCompletedHeader() { return page.locator("h2[data-test='complete-header']"); }
     public Locator allPrices() { return page.locator(".inventory_item_price"); }
 
-    // ===== Actions =====
+    //  Actions
     public void selectHighestFilter() {
         dropDownList().selectOption("hilo");
     }

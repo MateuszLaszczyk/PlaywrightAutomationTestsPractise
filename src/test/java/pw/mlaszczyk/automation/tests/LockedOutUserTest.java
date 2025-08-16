@@ -1,5 +1,6 @@
 package pw.mlaszczyk.automation.tests;
 
+import com.microsoft.playwright.Locator;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,8 @@ import pw.mlaszczyk.automation.pages.pages.LoginPage;
 
 
 import java.io.ByteArrayInputStream;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class LockedOutUserTest extends BaseTest {
     private static String lockedOutUserName;
@@ -40,7 +43,7 @@ public class LockedOutUserTest extends BaseTest {
         page.navigate(baseUrl);
 
         loginPage.loginAsLockedOutUser(lockedOutUserName, password);
-        loginPage.assertThatLockedOutUserCantLogIn();
+        assertThat(loginPage.lockedUserPopup()).hasText("Epic sadface: Sorry, this user has been locked out.");
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }

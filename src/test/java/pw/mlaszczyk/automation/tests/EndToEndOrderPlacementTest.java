@@ -2,18 +2,19 @@ package pw.mlaszczyk.automation.tests;
 
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
-import pw.mlaszczyk.automation.assertions.CartAssertions;
-import pw.mlaszczyk.automation.assertions.OrderAssertions;
-import pw.mlaszczyk.automation.assertions.PricingAssertions;
-import pw.mlaszczyk.automation.assertions.ProductAssertions;
 import pw.mlaszczyk.automation.config.ConfigLoader;
+import pw.mlaszczyk.automation.helpers.ProductAssertions;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
 import pw.mlaszczyk.automation.pages.pages.ProductPage;
 
 import java.io.ByteArrayInputStream;
-import java.util.Locale;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EndToEndOrderPlacementTest extends BaseTest {
 
@@ -21,14 +22,13 @@ public class EndToEndOrderPlacementTest extends BaseTest {
     private static String password;
     private static String baseUrl;
     private static String mainPageUrl;
-
+    private static ProductAssertions productAssertions;
     private LoginPage loginPage;
     private ProductPage productPage;
 
     @BeforeAll
     static void loadConfig() {
-        // Force US locale to make decimal formatting predictable (e.g., 10.99 instead of 10,99)
-        Locale.setDefault(Locale.US);
+        Locale.setDefault(Locale.US); // predictable decimals (10.99)
         username    = ConfigLoader.get("saucedemo.username");
         password    = ConfigLoader.get("saucedemo.password");
         baseUrl     = ConfigLoader.get("saucedemo.baseUrl");
@@ -36,7 +36,7 @@ public class EndToEndOrderPlacementTest extends BaseTest {
     }
 
     @BeforeEach
-    void setUpPages() {
+    void setUp() {
         loginPage   = new LoginPage(page);
         productPage = new ProductPage(page);
     }
@@ -45,39 +45,45 @@ public class EndToEndOrderPlacementTest extends BaseTest {
     @Feature("End-to-End Purchase Flow")
     @Severity(SeverityLevel.BLOCKER)
     @DisplayName("Complete order for Sauce Labs Fleece Jacket")
+    @Timeout(120)
     @Test
     void orderFlowTest() {
-        // 1) Navigate to login page and sign in
+        // 1) Login
         page.navigate(baseUrl);
         loginPage.loginToTheWebsite(username, password);
         assertThat(page).hasURL(mainPageUrl);
 
-        // 2) Sort products by highest price and verify correct sorting
+        // 2) Sort high→low and assert prices are sorted descending
         productPage.selectHighestFilter();
         ProductAssertions.assertPricesSortedDescending(productPage.allPrices());
 
-        // 3) Add "Sauce Labs Fleece Jacket" to the cart and verify cart badge count
+        // 3) Add product and assert cart badge
         productPage.addSauceLabsFleeceJacketToCart();
-        CartAssertions.assertCartItemCount(productPage.cartBadge(), 1);
+        assertThat(productPage.cartBadge()).hasText("1");
+        assertThat(productPage.sauceLabsFleeceRemoveButton()).isVisible();
 
-        // 4) Open the cart and verify that the correct product is inside
+        // 4) Go to cart and assert correct product is in the cart
         productPage.navigateToCart();
-        CartAssertions.assertProductNameInCart(productPage.productNameInCart(), "Sauce Labs Fleece Jacket");
+        assertThat(productPage.productNameInCart()).hasText("Sauce Labs Fleece Jacket");
 
-        // 5) Proceed to checkout and fill in shipping information
+        // 5) Checkout → fill data → Continue
         productPage.clickCheckoutButton();
         productPage.fillShippingData("John", "Doe", "80-000");
         productPage.clickContinueButton();
 
-        // 6) Verify that tax is 8% of item total and that total is correct
-        PricingAssertions.assertTaxIsEightPercent(productPage.itemTotalLabel(), productPage.taxLabel());
-        PricingAssertions.assertTotalPriceIsCorrect(productPage.itemTotalLabel(), productPage.taxLabel(), productPage.totalLabel());
+        // 6) Assert pricing (tax = 8% of item total, total = item total + tax)
+        assertThat(productPage.itemTotalLabel()).isVisible();
+        assertThat(productPage.taxLabel()).isVisible();
+        assertThat(productPage.totalLabel()).isVisible();
 
-        // 7) Finish the order and verify confirmation message
+        // 7) Assert correctness for prices
+        ProductAssertions.assertTaxIsEightPercent(productPage.itemTotalLabel(), productPage.taxLabel());
+        ProductAssertions.assertTotalPriceIsCorrect(productPage.itemTotalLabel(), productPage.taxLabel(), productPage.totalLabel());
+
+        // 8) Finish and assert completion
         productPage.clickFinishButton();
-        OrderAssertions.assertOrderIsCompleted(productPage.orderCompletedHeader());
+        assertThat(productPage.orderCompletedHeader()).isVisible();
 
-        // 8) Attach final screenshot to Allure report
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
 }
