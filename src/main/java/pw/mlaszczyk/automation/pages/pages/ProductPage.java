@@ -47,8 +47,11 @@ public class ProductPage {
     }
 
     public void fillShippingData(String firstName, String lastName, String zip) {
+        firstNameInput().clear();
         firstNameInput().fill(firstName);
+        lastNameInput().clear();
         lastNameInput().fill(lastName);
+        zipInput().clear();
         zipInput().fill(zip);
     }
 

@@ -15,7 +15,7 @@ public abstract class BaseTest {
     static void globalSetup() {
         playwright = Playwright.create();
 
-        String headlessStr = safeGet("browser.headless", "true");
+        String headlessStr = safeGet("browser.headless", "false");
         boolean headless = Boolean.parseBoolean(headlessStr);
 
         String browserName = safeGet("browser.name", "chromium"); // "chrome" | "chromium" | "firefox" | "webkit"

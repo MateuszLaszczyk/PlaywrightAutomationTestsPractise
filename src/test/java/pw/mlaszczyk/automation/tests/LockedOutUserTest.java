@@ -1,6 +1,5 @@
 package pw.mlaszczyk.automation.tests;
 
-import com.microsoft.playwright.Locator;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ public class LockedOutUserTest extends BaseTest {
 
 
     @BeforeAll
-    public static void loadConfig() {
+    public static void cfg() {
         lockedOutUserName = ConfigLoader.get("saucedemo.lockedOutUser");
         password = ConfigLoader.get("saucedemo.password");
         baseUrl = ConfigLoader.get("saucedemo.baseUrl");
@@ -40,10 +39,14 @@ public class LockedOutUserTest extends BaseTest {
     @DisplayName("Lockedout user test")
     @Test
     void lockedOutUserTest() {
+        // 1. Navigate to login page
         page.navigate(baseUrl);
-
-        loginPage.loginAsLockedOutUser(lockedOutUserName, password);
-        assertThat(loginPage.lockedUserPopup()).hasText("Epic sadface: Sorry, this user has been locked out.");
+        // 2. Login with provided credentials
+        loginPage.login(lockedOutUserName, password);
+        // 3. Assert that error popup is visible
+        assertThat(loginPage.errorMessage()).isVisible();
+        // 4. Assert that error popup has text
+        assertThat(loginPage.errorMessage()).hasText("Epic sadface: Sorry, this user has been locked out.");
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
