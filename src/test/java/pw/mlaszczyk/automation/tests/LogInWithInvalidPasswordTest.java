@@ -1,7 +1,6 @@
 package pw.mlaszczyk.automation.tests;
 
 
-import com.microsoft.playwright.Locator;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ public class LogInWithInvalidPasswordTest extends BaseTest {
     private LoginPage loginPage;
 
     @BeforeAll
-    static void loadConfig() {
+    static void cfg() {
         invalidPassword = ConfigLoader.get("saucedemo.invalidPassword");
         userName = ConfigLoader.get("saucedemo.username");
         baseUrl = ConfigLoader.get("saucedemo.baseUrl");
@@ -41,10 +40,14 @@ public class LogInWithInvalidPasswordTest extends BaseTest {
     @DisplayName("Invalid Password login")
     @Test
     void testLogInWithInvalidPassword() {
+        // 1. Navigate to login page
         page.navigate(baseUrl);
-
-        loginPage.loginWithInvalidPassword(userName, invalidPassword);
-        assertThat(loginPage.lockedUserPopup()).hasText("Epic sadface: Username and password do not match any user in this service");
+        // 2. Login with provided credentials
+        loginPage.login(userName, invalidPassword);
+        // 3. Assert that error popup is visible
+        assertThat(loginPage.errorMessage()).isVisible();
+        // 4. Assert that error popup has text
+        assertThat(loginPage.errorMessage()).hasText("Epic sadface: Username and password do not match any user in this service");
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
