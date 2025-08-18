@@ -15,7 +15,7 @@ public abstract class BaseTest {
     static void globalSetup() {
         playwright = Playwright.create();
 
-        String headlessStr = safeGet("browser.headless", "false");
+        String headlessStr = safeGet("browser.headless", "true");
         boolean headless = Boolean.parseBoolean(headlessStr);
 
         String browserName = safeGet("browser.name", "chromium"); // "chrome" | "chromium" | "firefox" | "webkit"
@@ -32,12 +32,16 @@ public abstract class BaseTest {
         }
 
         browser = type.launch(opts);
+
     }
 
     @BeforeEach
     void setupPage() {
         BrowserContext context = browser.newContext();
         page = context.newPage();
+        page.setDefaultTimeout(10_000);
+        page.setDefaultNavigationTimeout(10_000);
+
 
     }
 
