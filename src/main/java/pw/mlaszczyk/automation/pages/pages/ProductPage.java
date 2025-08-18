@@ -28,7 +28,8 @@ public class ProductPage {
     public Locator totalLabel() { return page.locator(".summary_total_label"); }
     public Locator orderCompletedHeader() { return page.locator("h2[data-test='complete-header']"); }
     public Locator allPrices() { return page.locator(".inventory_item_price"); }
-
+    public Locator boltTshirtAddButton(){ return page.locator("button[data-test='add-to-cart-sauce-labs-bolt-t-shirt']"); }
+    public Locator boltTshirtRemoveButton(){return page.locator("button[data-test='remove-sauce-labs-bolt-t-shirt']");}
     //  Actions
     public void selectHighestFilter() {
         dropDownList().selectOption("hilo");
@@ -61,5 +62,13 @@ public class ProductPage {
 
     public void addSauceLabsFleeceJacketToCart() {
         sauceLabsFleeceJacketAddButton().click();
+    }
+
+    public void addSauceLabsBoltTshirtToCart() {
+        boltTshirtAddButton().click();
+    }
+
+    public void removeSauceLabsBoltTshirtFromCart() {
+        boltTshirtRemoveButton().click();
     }
 }
