@@ -45,5 +45,7 @@ public class LogInWithValidCredentialsTest extends BaseTest {
         assertThat(page).hasURL(mainPageUrl);
 
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
+
+
     }
 }

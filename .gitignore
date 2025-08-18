@@ -11,7 +11,7 @@ target/
 *.iws
 *.iml
 *.ipr
-
+.idea/
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -62,3 +62,9 @@ config/secrets.local.properties
 "config/secrets.local.properties" 
 "config/secrets.yml" 
 "*.env" 
+
+# Allure reports
+allure-results/
+
+# Allure binaries
+allure/
