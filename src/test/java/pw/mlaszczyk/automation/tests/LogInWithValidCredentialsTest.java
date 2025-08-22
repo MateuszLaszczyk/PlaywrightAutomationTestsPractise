@@ -4,11 +4,14 @@ import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
+import pw.mlaszczyk.automation.tests.Setup.BaseTest;
 
 import java.io.ByteArrayInputStream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
+@Epic("Authentication")
+@Feature("Login")
 public class LogInWithValidCredentialsTest extends BaseTest {
     private static String username;
     private static String password;

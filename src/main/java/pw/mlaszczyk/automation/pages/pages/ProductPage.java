@@ -3,6 +3,10 @@ package pw.mlaszczyk.automation.pages.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class ProductPage {
     private final Page page;
 
@@ -10,27 +14,88 @@ public class ProductPage {
         this.page = page;
     }
 
-    //  Locators
-    public Locator dropDownList() { return page.locator("select[data-test='product-sort-container']"); }
-    public Locator cartIcon() { return page.locator("a[data-test='shopping-cart-link']"); }
-    public Locator checkoutButton() { return page.locator("button[data-test='checkout']"); }
-    public Locator continueButton() { return page.locator("input[data-test='continue']"); }
-    public Locator firstNameInput() { return page.locator("input[data-test='firstName']"); }
-    public Locator lastNameInput() { return page.locator("input[data-test='lastName']"); }
-    public Locator zipInput() { return page.locator("input[data-test='postalCode']"); }
-    public Locator finishButton() { return page.locator("button[data-test='finish']"); }
-    public Locator sauceLabsFleeceJacketAddButton() { return page.locator("button[data-test='add-to-cart-sauce-labs-fleece-jacket']"); }
-    public Locator cartBadge() { return page.locator("span[data-test='shopping-cart-badge']"); }
-    public Locator sauceLabsFleeceRemoveButton() { return page.locator("button[data-test='remove-sauce-labs-fleece-jacket']"); }
-    public Locator productNameInCart() { return page.locator("div[data-test='inventory-item-name']"); }
-    public Locator itemTotalLabel() { return page.locator(".summary_subtotal_label"); }
-    public Locator taxLabel() { return page.locator(".summary_tax_label"); }
-    public Locator totalLabel() { return page.locator(".summary_total_label"); }
-    public Locator orderCompletedHeader() { return page.locator("h2[data-test='complete-header']"); }
-    public Locator allPrices() { return page.locator(".inventory_item_price"); }
-    public Locator boltTshirtAddButton(){ return page.locator("button[data-test='add-to-cart-sauce-labs-bolt-t-shirt']"); }
-    public Locator boltTshirtRemoveButton(){return page.locator("button[data-test='remove-sauce-labs-bolt-t-shirt']");}
-    //  Actions
+    // ---------- Locators ----------
+    public Locator dropDownList() {
+        return page.locator("select[data-test='product-sort-container']");
+    }
+
+    public Locator cartIcon() {
+        return page.locator("a[data-test='shopping-cart-link']");
+    }
+
+    public Locator checkoutButton() {
+        return page.locator("button[data-test='checkout']");
+    }
+
+    public Locator continueButton() {
+        return page.locator("input[data-test='continue']");
+    }
+
+    public Locator firstNameInput() {
+        return page.locator("input[data-test='firstName']");
+    }
+
+    public Locator lastNameInput() {
+        return page.locator("input[data-test='lastName']");
+    }
+
+    public Locator zipInput() {
+        return page.locator("input[data-test='postalCode']");
+    }
+
+    public Locator finishButton() {
+        return page.locator("button[data-test='finish']");
+    }
+
+    public Locator sauceLabsFleeceJacketAddButton() {
+        return page.locator("button[data-test='add-to-cart-sauce-labs-fleece-jacket']");
+    }
+
+    public Locator cartBadge() {
+        return page.locator("span[data-test='shopping-cart-badge']");
+    }
+
+    public Locator sauceLabsFleeceRemoveButton() {
+        return page.locator("button[data-test='remove-sauce-labs-fleece-jacket']");
+    }
+
+    public Locator productNameInCart() {
+        return page.locator("div[data-test='inventory-item-name']");
+    }
+
+    public Locator itemTotalLabel() {
+        return page.locator(".summary_subtotal_label");
+    }
+
+    public Locator taxLabel() {
+        return page.locator(".summary_tax_label");
+    }
+
+    public Locator totalLabel() {
+        return page.locator(".summary_total_label");
+    }
+
+    public Locator orderCompletedHeader() {
+        return page.locator("h2[data-test='complete-header']");
+    }
+
+    public Locator allPrices() {
+        return page.locator(".inventory_item_price");
+    }
+
+    public Locator boltTshirtAddButton() {
+        return page.locator("button[data-test='add-to-cart-sauce-labs-bolt-t-shirt']");
+    }
+
+    public Locator boltTshirtRemoveButton() {
+        return page.locator("button[data-test='remove-sauce-labs-bolt-t-shirt']");
+    }
+
+    public Locator addButtons() {
+        return page.locator("button[data-test^='add-to-cart']");
+    }
+
+    // ---------- Actions ----------
     public void selectHighestFilter() {
         dropDownList().selectOption("hilo");
     }
@@ -48,11 +113,11 @@ public class ProductPage {
     }
 
     public void fillShippingData(String firstName, String lastName, String zip) {
-        firstNameInput().clear();
+        firstNameInput().fill("");
         firstNameInput().fill(firstName);
-        lastNameInput().clear();
+        lastNameInput().fill("");
         lastNameInput().fill(lastName);
-        zipInput().clear();
+        zipInput().fill("");
         zipInput().fill(zip);
     }
 
@@ -70,5 +135,37 @@ public class ProductPage {
 
     public void removeSauceLabsBoltTshirtFromCart() {
         boltTshirtRemoveButton().click();
+    }
+
+    public List<String> addRandomItemsToCart(int howMany) {
+        Locator adds = addButtons(); // all "Add to cart" buttons
+        int total = adds.count();
+        if (total < howMany) {
+            throw new RuntimeException("Not enough items to add: have, max is " + total );
+        }
+
+        // 1) snapshot all data-test attributes before clicking
+        List<String> dataTests = new ArrayList<>();
+        for (int i = 0; i < total; i++) {
+            String dt = adds.nth(i).getAttribute("data-test");
+            if (dt != null && dt.startsWith("add-to-cart-")) {
+                dataTests.add(dt);
+            }
+        }
+
+        // 2) shuffle and pick 'howMany'
+        Collections.shuffle(dataTests);
+        List<String> chosen = dataTests.subList(0, howMany);
+
+        // 3) click each selected button using its unique data-test
+        List<String> added = new ArrayList<>();
+        for (String dt : chosen) {
+            // Build selector using separate concatenation to avoid quote issues
+            String buttonSelector = "button[data-test=" + "'" + dt + "'" + "]";
+            page.locator(buttonSelector).click();
+            added.add(dt);
+        }
+
+        return added;
     }
 }

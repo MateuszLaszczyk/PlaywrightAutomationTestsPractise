@@ -6,6 +6,7 @@ import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.helpers.ProductAssertions;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
 import pw.mlaszczyk.automation.pages.pages.ProductPage;
+import pw.mlaszczyk.automation.tests.Setup.BaseTest;
 
 import java.io.ByteArrayInputStream;
 
@@ -14,7 +15,8 @@ import java.util.*;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-
+@Epic("E2E Shopping Journey")
+@Feature("Checkout")
 public class EndToEndOrderPlacementTest extends BaseTest {
 
     private static String username;
@@ -43,12 +45,11 @@ public class EndToEndOrderPlacementTest extends BaseTest {
         productPage = new ProductPage(page);
     }
 
-    @Epic("Order Placement")
-    @Feature("End-to-End Purchase Flow")
-    @Severity(SeverityLevel.BLOCKER)
-    @DisplayName("Complete order for Sauce Labs Fleece Jacket")
-    @Timeout(120)
     @Test
+    @DisplayName("Place an order end-to-end")
+    @Severity(SeverityLevel.BLOCKER)
+    @Description("Validates the scenario: Place an order end-to-end. Covers login, cart, checkout steps, pricing assertions, and confirmation.")
+    @Owner("QA Automation")
     void orderFlowTest() {
         // 1. Navigate to the login page
         page.navigate(baseUrl);

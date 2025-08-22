@@ -7,12 +7,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
+import pw.mlaszczyk.automation.tests.Setup.BaseTest;
 
 
 import java.io.ByteArrayInputStream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
+
+@Epic("Authentication")
+@Feature("Login")
 public class LockedOutUserTest extends BaseTest {
     private static String lockedOutUserName;
     private static String password;
@@ -32,12 +36,11 @@ public class LockedOutUserTest extends BaseTest {
         loginPage = new LoginPage(page);
     }
 
-    @Epic("Lockedout ")
-    @Feature("Lockedout user feature")
-    @Story("User is not able to login if his account is lockedout")
-    @Severity(SeverityLevel.NORMAL)
-    @DisplayName("Lockedout user test")
     @Test
+    @DisplayName("Login fails with invalid password")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Ensures login fails when the password is invalid and the user remains unauthenticated with a visible error message.")
+    @Owner("QA Automation")
     void lockedOutUserTest() {
         // 1. Navigate to login page
         page.navigate(baseUrl);

@@ -5,11 +5,14 @@ import org.junit.jupiter.api.*;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
 import pw.mlaszczyk.automation.pages.pages.ProductPage;
+import pw.mlaszczyk.automation.tests.Setup.BaseTest;
 
 import java.io.ByteArrayInputStream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
+@Epic("Shopping Journey")
+@Feature("Cart")
 public class AddItemToCartTest extends BaseTest {
     private static String username;
     private static String password;
