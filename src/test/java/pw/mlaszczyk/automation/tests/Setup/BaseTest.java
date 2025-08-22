@@ -1,4 +1,4 @@
-package pw.mlaszczyk.automation.tests;
+package pw.mlaszczyk.automation.tests.Setup;
 
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.*;
@@ -15,7 +15,8 @@ public abstract class BaseTest {
     static void globalSetup() {
         playwright = Playwright.create();
 
-        String headlessStr = safeGet("browser.headless", "true");
+        String headlessStr = safeGet("browser.headless", "true" +
+                "");
         boolean headless = Boolean.parseBoolean(headlessStr);
 
         String browserName = safeGet("browser.name", "chromium"); // "chrome" | "chromium" | "firefox" | "webkit"

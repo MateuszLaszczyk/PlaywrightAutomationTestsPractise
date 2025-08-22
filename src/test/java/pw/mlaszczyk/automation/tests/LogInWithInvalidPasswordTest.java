@@ -8,12 +8,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
+import pw.mlaszczyk.automation.tests.Setup.BaseTest;
 
 
 import java.io.ByteArrayInputStream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
+@Epic("Authentication")
+@Feature("Login")
 public class LogInWithInvalidPasswordTest extends BaseTest {
     private static String userName;
     private static String baseUrl;

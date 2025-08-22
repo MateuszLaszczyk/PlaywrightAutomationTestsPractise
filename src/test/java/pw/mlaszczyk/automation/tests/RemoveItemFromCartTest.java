@@ -1,14 +1,19 @@
 package pw.mlaszczyk.automation.tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pw.mlaszczyk.automation.config.ConfigLoader;
 import pw.mlaszczyk.automation.pages.pages.LoginPage;
 import pw.mlaszczyk.automation.pages.pages.ProductPage;
+import pw.mlaszczyk.automation.tests.Setup.BaseTest;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
+@Epic("Shopping Journey")
+@Feature("Cart")
 public class RemoveItemFromCartTest extends BaseTest {
 
     private static String username;

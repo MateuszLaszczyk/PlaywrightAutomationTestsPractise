@@ -1,13 +1,11 @@
 package pw.mlaszczyk.automation.helpers;
 
 import com.microsoft.playwright.Locator;
+import pw.mlaszczyk.automation.pages.pages.ProductPage;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -15,6 +13,8 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 /** Assertions related to product lists. */
 public final class ProductAssertions {
     private ProductAssertions() { /* utility class */ }
+
+    ProductPage productPage;
 
     /**
      * Verifies that the prices from the given locator (e.g. ".inventory_item_price") are sorted high→low.
@@ -58,7 +58,11 @@ public final class ProductAssertions {
                 .trim();
         return new BigDecimal(raw);
     }
+
 }
+
+
+
 
 
 
