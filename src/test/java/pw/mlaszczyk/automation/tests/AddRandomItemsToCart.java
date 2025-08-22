@@ -111,8 +111,6 @@ public class AddRandomItemsToCart extends BaseTest {
         // 17. Attach a screenshot to Allure report
         Allure.addAttachment("Page screenshot", new ByteArrayInputStream(page.screenshot()));
     }
-
-
 }
 
 
